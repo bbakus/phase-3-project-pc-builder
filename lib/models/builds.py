@@ -5,9 +5,29 @@ from models.components import Component
 class Build:
     def __init__(self, name, description="", id=None):
         self.id = id
-        self.name = name
-        self.description = description
-    
+        self._name = name
+        self._description = description
+
+
+    @property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, name_value):
+        if not isinstance(name_value, str) or len(name_value) == 0:
+            return
+        self._name = name_value
+
+    @property
+    def description(self):
+        return self._description
+    @description.setter
+    def description(self, description_value):
+        if not isinstance(description_value, str) or len(description_value) < 3:
+            return
+        self._description = description_value
+
+
     def save(self):
         if self.id is None:
             sql = """
@@ -51,3 +71,4 @@ class Build:
         CURSOR.execute(sql, (self.id, component_id))
         CONN.commit()
         return self
+    

@@ -61,6 +61,7 @@ class CLI:
         
         print("1. Browse Components")
         print("2. View/Manage Builds")
+        print("3. Our Founding Father")
         if self.current_build:
             print("3. View Current Build")
             print("4. Add Component to Current Build")
@@ -69,7 +70,7 @@ class CLI:
         if self.current_build:
             choice = self.get_input("\nSelect an option: ", ["0", "1", "2", "3", "4"])
         else:
-            choice = self.get_input("\nSelect an option: ", ["0", "1", "2"])
+            choice = self.get_input("\nSelect an option: ", ["0", "1", "2", "3"])
         
         if choice == "1":
             self.browse_components()
@@ -79,6 +80,8 @@ class CLI:
             self.view_current_build()
         elif choice == "4" and self.current_build:
             self.add_component_to_build()
+        elif choice == "3":
+            self.our_king()
         elif choice == "0":
             print("Thank you for using PC Builder!")
             exit()
@@ -342,6 +345,15 @@ class CLI:
         # If the deleted build was the current build, reset current_build
         if self.current_build and self.current_build.id == build.id:
             self.current_build = None
+
+    def our_king(self):
+        print("\nALL HAIL ___BR4ND0N B4KU5___ YOU PEASANTS")
+        input("\nPress Enter to continue...")
+        self.main_menu()
+        return
+
+
+
 
 def main():
     """Main entry point for the CLI"""

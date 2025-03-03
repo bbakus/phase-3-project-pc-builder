@@ -1,12 +1,43 @@
-# component.py
+
 from models.database import CONN, CURSOR
 
 class Component:
     def __init__(self, name, category, price, id=None):
         self.id = id
-        self.name = name
-        self.category = category
-        self.price = price
+        self._name = name
+        self._category = category
+        self._price = price
+
+
+    @property
+    def price(self):
+        return self._price
+    @price.setter
+    def price(self, price_value):
+        if not isinstance(price_value, float):
+            return
+        self._price = price_value
+
+    @property
+    def category(self):
+        return self._category
+    @category.setter
+    def category(self, category_value):
+        if not isinstance(category_value, str):
+            return
+        self._category = category_value
+
+    @property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, name_value):
+        if not isinstance(name_value, str):
+            return
+        self._name = name_value
+
+
+ 
     
     def save(self):
         if self.id is None:

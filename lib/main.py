@@ -1,5 +1,4 @@
-# lib/main.py
-import os
+
 from models.database import CONN, CURSOR, create_tables
 from seed_data import seed_data
 from cli import main as run_cli
