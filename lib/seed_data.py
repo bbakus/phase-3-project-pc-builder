@@ -5,7 +5,7 @@ from models.database import CONN, CURSOR, create_tables
 
 def seed_data():
    
-    print("Starting to seed database...")
+    
     
     # CPUs
     cpus = [
@@ -160,7 +160,7 @@ def seed_data():
     all_components = cpus + gpus + motherboards + rams + storages + psus + cases + cooling
     
     
-    print(f"Adding {len(all_components)} components to database...")
+    
     
     component_objects = {} 
     
@@ -188,7 +188,7 @@ def seed_data():
     
     # Create sample builds
     try:
-        print("\nCreating sample builds...")
+        
         
         # High-end Gaming PC
         gaming_build = Build("Ultimate Gaming Rig", "High-end gaming PC for 4K gaming")
@@ -255,8 +255,6 @@ def seed_data():
     except Exception as e:
         print(f"Error creating sample builds: {str(e)}")
     
-    
-    print("\nVerifying database contents:")
     
     
     all_components = CURSOR.execute("SELECT COUNT(*) FROM components").fetchone()[0]

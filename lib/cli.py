@@ -332,22 +332,34 @@ class CLI:
     
     def delete_build(self, build):
         
-        # First, delete all build_components entries
+        
         import sqlite3
         conn = sqlite3.connect('pc_builder.db')
         cursor = conn.cursor()
         cursor.execute("DELETE FROM build_components WHERE build_id = ?", (build.id,))
         
-        # Then delete the build
+        
         cursor.execute("DELETE FROM builds WHERE id = ?", (build.id,))
         conn.commit()
         
-        # If the deleted build was the current build, reset current_build
+        
         if self.current_build and self.current_build.id == build.id:
             self.current_build = None
 
     def our_king(self):
         print("\nALL HAIL ___BR4ND0N B4KU5___ YOU PEASANTS")
+        print("\nOFFER TRIBUTE TO THE PC GOD")
+        print("\n1. Praise")
+        print("2. Give All Your Money")
+        print("3. Join Covenant, Abandons Former Covenant")
+        choice = self.get_input("\nSelect an option: ", ["1", "2", "3"])
+        if choice == "1":
+            print("\nMay GHZ Be With You")
+        if choice == "2":
+            print("\nWell Done, Here Is Your RTX 4090")
+        if choice == "3":
+            print("\nHere Is The Key To Artorias' Grave. Meow.")
+        
         input("\nPress Enter to continue...")
         self.main_menu()
         return
