@@ -30,7 +30,7 @@ pc_builder/
 
 1. Clone the repository:
 ```
-git clone https://github.com/yourusername/pc-builder.git
+git clone https://github.com/bbakus/phase-3-project-pc-builder.git
 cd pc-builder
 ```
 
