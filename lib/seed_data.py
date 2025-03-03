@@ -1,10 +1,10 @@
-# lib/seed_data.py
+
 from models.components import Component
 from models.builds import Build
 from models.database import CONN, CURSOR, create_tables
 
 def seed_data():
-    """Seed the database with a comprehensive list of PC components"""
+   
     print("Starting to seed database...")
     
     # CPUs
@@ -156,13 +156,13 @@ def seed_data():
         {"name": "Lian Li Galahad 360", "category": "Cooling", "price": 159.99}
     ]
     
-    # Combine all component data
+    
     all_components = cpus + gpus + motherboards + rams + storages + psus + cases + cooling
     
-    # Insert components using the Component class
+    
     print(f"Adding {len(all_components)} components to database...")
     
-    component_objects = {}  # To store components by category and name for later lookup
+    component_objects = {} 
     
     for component_data in all_components:
         try:
@@ -194,7 +194,7 @@ def seed_data():
         gaming_build = Build("Ultimate Gaming Rig", "High-end gaming PC for 4K gaming")
         gaming_build.save()
         
-        # Add components to build using our component objects dictionary
+        
         gaming_build.add_component(component_objects["CPU"]["AMD Ryzen 9 5950X"].id)
         gaming_build.add_component(component_objects["GPU"]["NVIDIA GeForce RTX 3090"].id)
         gaming_build.add_component(component_objects["Motherboard"]["ASUS ROG Crosshair VIII Hero X570"].id)
@@ -210,7 +210,7 @@ def seed_data():
         mid_build = Build("Mid-range Gaming PC", "Balanced gaming PC for 1440p gaming")
         mid_build.save()
         
-        # Add components to mid-range build
+        
         mid_build.add_component(component_objects["CPU"]["AMD Ryzen 5 5600X"].id)
         mid_build.add_component(component_objects["GPU"]["NVIDIA GeForce RTX 3070"].id)
         mid_build.add_component(component_objects["Motherboard"]["MSI MAG B550 Tomahawk"].id)
@@ -225,7 +225,7 @@ def seed_data():
         budget_build = Build("Budget Gaming PC", "Affordable gaming PC for 1080p gaming")
         budget_build.save()
         
-        # Add components to budget build
+        
         budget_build.add_component(component_objects["CPU"]["Intel Core i5-12600K"].id)
         budget_build.add_component(component_objects["GPU"]["NVIDIA GeForce RTX 3060"].id)
         budget_build.add_component(component_objects["Motherboard"]["ASRock B550 Pro4"].id)
@@ -240,7 +240,7 @@ def seed_data():
         creator_build = Build("Content Creator Workstation", "PC optimized for video editing and 3D rendering")
         creator_build.save()
         
-        # Add components to workstation build
+       
         creator_build.add_component(component_objects["CPU"]["Intel Core i9-12900K"].id)
         creator_build.add_component(component_objects["GPU"]["AMD Radeon RX 6900 XT"].id)
         creator_build.add_component(component_objects["Motherboard"]["ASUS ROG Strix Z690-A Gaming"].id)
@@ -255,20 +255,20 @@ def seed_data():
     except Exception as e:
         print(f"Error creating sample builds: {str(e)}")
     
-    # Verify data was inserted
+    
     print("\nVerifying database contents:")
     
-    # Get the component count using the Component class
+    
     all_components = CURSOR.execute("SELECT COUNT(*) FROM components").fetchone()[0]
     print(f"Total components in database: {all_components}")
     
-    # Get the build count using the Build class
+    
     all_builds = CURSOR.execute("SELECT COUNT(*) FROM builds").fetchone()[0]
     print(f"Total builds in database: {all_builds}")
     
     print("\nDatabase seeded successfully!")
 
 if __name__ == "__main__":
-    # Allow the script to be run directly for testing
+    
     create_tables()
     seed_data()

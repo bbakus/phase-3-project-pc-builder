@@ -1,4 +1,4 @@
-# build.py
+
 from models.database import CONN, CURSOR
 from models.components import Component
 

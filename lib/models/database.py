@@ -1,11 +1,11 @@
-# database.py
+
 import sqlite3
 
-# Create connection to database
+
 CONN = sqlite3.connect('pc_builder.db')
 CURSOR = CONN.cursor()
 
-# Add this to models/database.py
+
 
 def create_tables():
     """Create all necessary tables if they don't exist"""

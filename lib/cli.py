@@ -2,24 +2,24 @@ import os
 from models import Component, Build
 
 class CLI:
-    """Command Line Interface for PC Builder application"""
+   
     
     def __init__(self):
         self.current_build = None
     
     def clear_screen(self):
-        """Clear the terminal screen"""
+        
         os.system('cls' if os.name == 'nt' else 'clear')
     
     def print_header(self, title):
-        """Print a formatted header"""
+       
         self.clear_screen()
         print("\n" + "=" * 60)
         print(f"{title.center(60)}")
         print("=" * 60 + "\n")
     
     def get_input(self, prompt, options=None):
-        """Get input from user with validation"""
+        
         while True:
             user_input = input(prompt)
             
@@ -32,7 +32,7 @@ class CLI:
             print(f"Invalid input. Please enter one of: {', '.join(options)}")
     
     def get_number_input(self, prompt, min_value=None, max_value=None):
-        """Get numeric input from user with validation"""
+        
         while True:
             user_input = input(prompt)
             
@@ -52,7 +52,7 @@ class CLI:
                 print("Please enter a valid number")
     
     def main_menu(self):
-        """Display the main menu"""
+       
         self.print_header("PC BUILDER - MAIN MENU")
         
         if self.current_build:
@@ -87,7 +87,7 @@ class CLI:
             exit()
     
     def browse_components(self):
-        """Browse components by category"""
+        
         self.print_header("BROWSE COMPONENTS")
         
         # Verify components table exists first
@@ -128,7 +128,7 @@ class CLI:
             components = []
             for cat in categories[:-1]:  # Exclude "All"
                 # Execute a SQL query to get components by category
-                # This is a simplified version, you might want to implement this in your Component class
+                
                 import sqlite3
                 conn = sqlite3.connect('pc_builder.db')
                 cursor = conn.cursor()
@@ -148,7 +148,7 @@ class CLI:
         self.display_components(components, category)
     
     def display_components(self, components, category):
-        """Display a list of components"""
+        
         self.print_header(f"{category.upper()} COMPONENTS")
         
         if not components:
@@ -183,7 +183,7 @@ class CLI:
             self.browse_components()
     
     def view_component_details(self, component):
-        """View details of a specific component"""
+       
         self.print_header(f"COMPONENT DETAILS: {component.name}")
         
         print(f"Name: {component.name}")
@@ -207,7 +207,7 @@ class CLI:
         self.browse_components()
     
     def view_builds(self):
-        """View and manage builds"""
+       
         self.print_header("VIEW/MANAGE BUILDS")
         
         # Get all builds from database
@@ -249,7 +249,7 @@ class CLI:
             self.main_menu()
     
     def view_build_details(self, build):
-        """View details of a specific build"""
+       
         self.print_header(f"BUILD DETAILS: {build.name}")
         
         print(f"Name: {build.name}")
@@ -291,7 +291,7 @@ class CLI:
             self.view_builds()
     
     def create_new_build(self):
-        """Create a new build"""
+       
         self.print_header("CREATE NEW BUILD")
         
         name = input("Enter build name: ")
@@ -311,7 +311,7 @@ class CLI:
         self.main_menu()
     
     def view_current_build(self):
-        """View details of the current build"""
+        
         if not self.current_build:
             print("No current build selected.")
             input("\nPress Enter to continue...")
@@ -321,7 +321,7 @@ class CLI:
         self.view_build_details(self.current_build)
     
     def add_component_to_build(self):
-        """Add a component to the current build"""
+       
         if not self.current_build:
             print("No current build selected.")
             input("\nPress Enter to continue...")
@@ -331,7 +331,7 @@ class CLI:
         self.browse_components()
     
     def delete_build(self, build):
-        """Delete a build and its associated components"""
+        
         # First, delete all build_components entries
         import sqlite3
         conn = sqlite3.connect('pc_builder.db')
