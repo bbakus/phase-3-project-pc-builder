@@ -3,6 +3,9 @@ from models.database import CONN, CURSOR
 from models.components import Component
 
 class Build:
+
+    all = []
+
     def __init__(self, name, description="", id=None):
         self.id = id
         self._name = name
@@ -45,6 +48,7 @@ class Build:
             """
             CURSOR.execute(sql, (self.name, self.description, self.id))
             CONN.commit()
+        Build.all.append(self)
         return self
     
     def get_components(self):

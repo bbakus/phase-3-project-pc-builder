@@ -2,6 +2,10 @@
 from models.database import CONN, CURSOR
 
 class Component:
+
+    all = []
+
+
     def __init__(self, name, category, price, id=None):
         self.id = id
         self._name = name
@@ -56,7 +60,9 @@ class Component:
             """
             CURSOR.execute(sql, (self.name, self.category, self.price, self.id))
             CONN.commit()
+        Component.all.append(self)
         return self
+        
     
     @classmethod
     def find_by_id(cls, id):

@@ -1,25 +1,29 @@
 import os
+import sqlite3
 from models import Component, Build
 
 class CLI:
-   
     
     def __init__(self):
         self.current_build = None
+        self.conn = sqlite3.connect('pc_builder.db')
+        self.cursor = self.conn.cursor()
+    
+    def close(self):
+        
+        if hasattr(self, 'conn'):
+            self.conn.close()
     
     def clear_screen(self):
-        
         os.system('cls' if os.name == 'nt' else 'clear')
     
     def print_header(self, title):
-       
         self.clear_screen()
         print("\n" + "=" * 60)
         print(f"{title.center(60)}")
         print("=" * 60 + "\n")
     
     def get_input(self, prompt, options=None):
-        
         while True:
             user_input = input(prompt)
             
@@ -32,7 +36,6 @@ class CLI:
             print(f"Invalid input. Please enter one of: {', '.join(options)}")
     
     def get_number_input(self, prompt, min_value=None, max_value=None):
-        
         while True:
             user_input = input(prompt)
             
@@ -52,7 +55,6 @@ class CLI:
                 print("Please enter a valid number")
     
     def main_menu(self):
-       
         self.print_header("PC BUILDER - MAIN MENU")
         
         if self.current_build:
@@ -84,19 +86,16 @@ class CLI:
             self.our_king()
         elif choice == "0":
             print("Thank you for using PC Builder!")
+            self.close() 
             exit()
     
     def browse_components(self):
-        
         self.print_header("BROWSE COMPONENTS")
         
-        # Verify components table exists first
+       
         try:
-            import sqlite3
-            conn = sqlite3.connect('pc_builder.db')
-            cursor = conn.cursor()
-            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='components'")
-            if not cursor.fetchone():
+            self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='components'")
+            if not self.cursor.fetchone():
                 print("Components table doesn't exist! Please run the seed_data.py script first.")
                 input("\nPress Enter to continue...")
                 self.main_menu()
@@ -107,7 +106,6 @@ class CLI:
             self.main_menu()
             return
     
-        
         categories = ["CPU", "GPU", "Motherboard", "RAM", "Storage", "PSU", "Case", "Cooling", "All"]
         
         for i, category in enumerate(categories, 1):
@@ -124,31 +122,23 @@ class CLI:
         category = categories[choice - 1]
         
         if category == "All":
-            # Get all components from database
+            
             components = []
-            for cat in categories[:-1]:  # Exclude "All"
-                # Execute a SQL query to get components by category
+            for cat in categories[:-1]:  
                 
-                import sqlite3
-                conn = sqlite3.connect('pc_builder.db')
-                cursor = conn.cursor()
-                cursor.execute("SELECT * FROM components WHERE category = ?", (cat,))
-                rows = cursor.fetchall()
+                self.cursor.execute("SELECT * FROM components WHERE category = ?", (cat,))
+                rows = self.cursor.fetchall()
                 for row in rows:
                     components.append(Component(row[1], row[2], row[3], row[0]))
         else:
-            # Get components by category from database
-            import sqlite3
-            conn = sqlite3.connect('pc_builder.db')
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM components WHERE category = ?", (category,))
-            rows = cursor.fetchall()
+            
+            self.cursor.execute("SELECT * FROM components WHERE category = ?", (category,))
+            rows = self.cursor.fetchall()
             components = [Component(row[1], row[2], row[3], row[0]) for row in rows]
         
         self.display_components(components, category)
     
     def display_components(self, components, category):
-        
         self.print_header(f"{category.upper()} COMPONENTS")
         
         if not components:
@@ -183,7 +173,6 @@ class CLI:
             self.browse_components()
     
     def view_component_details(self, component):
-       
         self.print_header(f"COMPONENT DETAILS: {component.name}")
         
         print(f"Name: {component.name}")
@@ -207,15 +196,11 @@ class CLI:
         self.browse_components()
     
     def view_builds(self):
-       
         self.print_header("VIEW/MANAGE BUILDS")
         
-        # Get all builds from database
-        import sqlite3
-        conn = sqlite3.connect('pc_builder.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM builds")
-        rows = cursor.fetchall()
+       
+        self.cursor.execute("SELECT * FROM builds")
+        rows = self.cursor.fetchall()
         builds = [Build(row[1], row[2], row[0]) for row in rows]
         
         if not builds:
@@ -249,7 +234,6 @@ class CLI:
             self.main_menu()
     
     def view_build_details(self, build):
-       
         self.print_header(f"BUILD DETAILS: {build.name}")
         
         print(f"Name: {build.name}")
@@ -282,7 +266,7 @@ class CLI:
         elif choice == "2":
             confirm = self.get_input(f"Are you sure you want to delete {build.name}? (y/n): ", ["y", "n"])
             if confirm == "y":
-                # Delete the build from the database
+                
                 self.delete_build(build)
                 print(f"\n{build.name} deleted!")
             input("\nPress Enter to continue...")
@@ -291,13 +275,12 @@ class CLI:
             self.view_builds()
     
     def create_new_build(self):
-       
         self.print_header("CREATE NEW BUILD")
         
         name = input("Enter build name: ")
         description = input("Enter build description: ")
         
-        # Create new build in database
+        
         build = Build(name, description)
         build.save()
         
@@ -311,7 +294,6 @@ class CLI:
         self.main_menu()
     
     def view_current_build(self):
-        
         if not self.current_build:
             print("No current build selected.")
             input("\nPress Enter to continue...")
@@ -321,7 +303,6 @@ class CLI:
         self.view_build_details(self.current_build)
     
     def add_component_to_build(self):
-       
         if not self.current_build:
             print("No current build selected.")
             input("\nPress Enter to continue...")
@@ -332,15 +313,11 @@ class CLI:
     
     def delete_build(self, build):
         
-        
-        import sqlite3
-        conn = sqlite3.connect('pc_builder.db')
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM build_components WHERE build_id = ?", (build.id,))
+        self.cursor.execute("DELETE FROM build_components WHERE build_id = ?", (build.id,))
         
         
-        cursor.execute("DELETE FROM builds WHERE id = ?", (build.id,))
-        conn.commit()
+        self.cursor.execute("DELETE FROM builds WHERE id = ?", (build.id,))
+        self.conn.commit()
         
         
         if self.current_build and self.current_build.id == build.id:
@@ -355,9 +332,9 @@ class CLI:
         choice = self.get_input("\nSelect an option: ", ["1", "2", "3"])
         if choice == "1":
             print("\nMay GHZ Be With You")
-        if choice == "2":
+        elif choice == "2":  # Changed from if to elif
             print("\nWell Done, Here Is Your RTX 4090")
-        if choice == "3":
+        elif choice == "3":  # Changed from if to elif
             print("\nHere Is The Key To Artorias' Grave. Meow.")
         
         input("\nPress Enter to continue...")
@@ -365,21 +342,22 @@ class CLI:
         return
 
 
-
-
 def main():
-    """Main entry point for the CLI"""
+    
     cli = CLI()
     
-    while True:
-        try:
-            cli.main_menu()
-        except KeyboardInterrupt:
-            print("\nThank you for using PC Builder!")
-            break
-        except Exception as e:
-            print(f"\nAn error occurred: {str(e)}")
-            input("Press Enter to continue...")
+    try:
+        while True:
+            try:
+                cli.main_menu()
+            except KeyboardInterrupt:
+                print("\nThank you for using PC Builder!")
+                break
+            except Exception as e:
+                print(f"\nAn error occurred: {str(e)}")
+                input("Press Enter to continue...")
+    finally:
+        cli.close()  # Ensure the database connection is closed
 
 if __name__ == "__main__":
     main()
