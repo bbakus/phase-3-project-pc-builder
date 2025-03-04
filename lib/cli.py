@@ -332,9 +332,9 @@ class CLI:
         choice = self.get_input("\nSelect an option: ", ["1", "2", "3"])
         if choice == "1":
             print("\nMay GHZ Be With You")
-        elif choice == "2":  # Changed from if to elif
+        elif choice == "2":  
             print("\nWell Done, Here Is Your RTX 4090")
-        elif choice == "3":  # Changed from if to elif
+        elif choice == "3":  
             print("\nHere Is The Key To Artorias' Grave. Meow.")
         
         input("\nPress Enter to continue...")
