@@ -8,11 +8,11 @@ CURSOR = CONN.cursor()
 
 
 def create_tables():
-    """Create all necessary tables if they don't exist"""
+    
     
     print("Creating database tables...")
     
-    # Create components table
+    
     CURSOR.execute("""
         CREATE TABLE IF NOT EXISTS components (
             id INTEGER PRIMARY KEY,
@@ -22,7 +22,7 @@ def create_tables():
         )
     """)
     
-    # Create builds table
+    
     CURSOR.execute("""
         CREATE TABLE IF NOT EXISTS builds (
             id INTEGER PRIMARY KEY,
@@ -31,7 +31,7 @@ def create_tables():
         )
     """)
     
-    # Create build_components join table
+    
     CURSOR.execute("""
         CREATE TABLE IF NOT EXISTS build_components (
             id INTEGER PRIMARY KEY,

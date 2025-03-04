@@ -166,16 +166,16 @@ def seed_data():
     
     for component_data in all_components:
         try:
-            # Create a Component object
+            
             component = Component(
                 component_data["name"],
                 component_data["category"],
                 component_data["price"]
             )
-            # Save to database
+           
             component.save()
             
-            # Store the component object for later lookup
+            
             category = component_data["category"]
             name = component_data["name"]
             if category not in component_objects:
@@ -186,7 +186,7 @@ def seed_data():
         except Exception as e:
             print(f"Error adding component {component_data['name']}: {str(e)}")
     
-    # Create sample builds
+   
     try:
         
         
