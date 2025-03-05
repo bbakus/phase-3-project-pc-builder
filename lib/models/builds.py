@@ -10,6 +10,7 @@ class Build:
         self.id = id
         self._name = name
         self._description = description
+        Build.all.append(self)
 
 
     @property

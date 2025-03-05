@@ -11,6 +11,7 @@ class Component:
         self._name = name
         self._category = category
         self._price = price
+        Component.all.append(self)
 
 
     @property

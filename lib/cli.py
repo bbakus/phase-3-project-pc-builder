@@ -357,7 +357,7 @@ def main():
                 print(f"\nAn error occurred: {str(e)}")
                 input("Press Enter to continue...")
     finally:
-        cli.close()  # Ensure the database connection is closed
+        cli.close() 
 
 if __name__ == "__main__":
     main()
